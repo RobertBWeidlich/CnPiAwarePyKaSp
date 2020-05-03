@@ -12,7 +12,10 @@ myResponse = requests.get(URL)
 print(myResponse)
 
 if myResponse.ok:
+    sz = len(myResponse.content)
+    print("sz: %d" % sz)
     print(myResponse.content)
 
 else:
     myResponse.raise_for_status()
+
