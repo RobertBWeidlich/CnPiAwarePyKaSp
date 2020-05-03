@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+"""
+Retrieve data from PiAware via REST interface
+"""
 import sys
 import requests
 import json
