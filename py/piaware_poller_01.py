@@ -1,7 +1,4 @@
 #!/usr/bin/env python
-"""
-preliminary analysis - track all hex number, figure out the different records
-"""
 import sys
 import requests
 import json
@@ -21,3 +18,4 @@ if myResponse.ok:
 
 else:
     myResponse.raise_for_status()
+
