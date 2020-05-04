@@ -2,8 +2,7 @@
 """
 Loop to periodically poll the PiAware
 Retrieve data from PiAware via REST interface
-(preliminary analysis - track all hex number, figure out the different records)
-todo: write to file
+preliminary analysis - track all hex number, figure out the different records
 """
 import sys
 import requests
@@ -15,6 +14,7 @@ URL = 'http://192.168.1.208:8080/data/aircraft.json'
 POLL_PERIOD = 10     # seconds, must be integer > 0, should be 1,2,3,4,5,10,15,20,30, or 60
 WAIT_OFFSET = 0.0
 MAX_LOOP_COUNT = 4
+
 
 """
 Analyze data, which is expected to be in JSON format
@@ -34,7 +34,6 @@ def analyze(json_data):
             hex_list.append(aircraft['hex'])
     hex_list.sort()
     print(hex_list)
-
 
 
 def main():
