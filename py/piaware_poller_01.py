@@ -6,7 +6,7 @@ import sys
 import requests
 import json
 
-print "Hello World!"
+print("Hello World!")
 
 URL = 'http://192.168.1.208:8080/data/aircraft.json'
 

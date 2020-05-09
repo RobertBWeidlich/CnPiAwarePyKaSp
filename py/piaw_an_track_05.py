@@ -8,18 +8,24 @@ purpose:
   Loop to periodically poll the PiAware
   Retrieve data from PiAware via REST interface
   preliminary analysis - track all hex number, figure out the different records
-  Keep 2 lists:
+  Keep 3 lists:
     1. This - currently polled flights
     1. Legacy - all flights
     2. Tracking - only those new flights discovered after start.
          All flights in the This list not in Legacy and not in Tracking
          are added to this list
+  Additional: track a single flight
 """
 import sys
 import requests
 import socket
 import json
 import time
+import numpy as np
+import pandas as pd
+import matplotlib
+import matplotlib.pyplot as plt
+
 
 URL = 'http://192.168.1.208:8080/data/aircraft.json'
 POLL_PERIOD = 10     # seconds, must be integer > 0, should be 1,2,3,4,5,10,15,20,30, or 60
@@ -98,6 +104,10 @@ def main():
 
 
 if __name__ == '__main__':
+    print('Python version ' + sys.version)
+    print('Pandas version ' + pd.__version__)
+    print('Matplotlib version ' + matplotlib.__version__)
+
     argc = len(sys.argv)
     main()
     sys.exit(0)

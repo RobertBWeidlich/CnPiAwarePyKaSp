@@ -8,7 +8,7 @@ purpose:
   Loop to periodically poll the PiAware
   Retrieve data from PiAware via REST interface
   preliminary analysis - track all hex number, figure out the different records
-  Keep 2 lists:
+  Keep 3 lists:
     1. This - currently polled flights
     1. Legacy - all flights
     2. Tracking - only those new flights discovered after start.
@@ -20,6 +20,7 @@ import requests
 import socket
 import json
 import time
+from pandas import DataFrame, read_csv
 
 URL = 'http://192.168.1.208:8080/data/aircraft.json'
 POLL_PERIOD = 10     # seconds, must be integer > 0, should be 1,2,3,4,5,10,15,20,30, or 60
@@ -28,6 +29,9 @@ MAX_LOOP_COUNT = 10000000
 
 hex_list_legacy = None  # aircraft we found at start - don't analyze
 hex_list_tracking = []  # aircraft encountered after start
+tracking_data = []      # lists (or dict?) of tracking data
+
+
 
 """
 Analyze data, which is expected to be in JSON format
@@ -61,6 +65,8 @@ def analyze(json_data):
             print("new: %s" % hex_s)
             hex_list_legacy.append(hex_s)
             hex_list_tracking.append(hex_s)
+            #this_aircraft = json_data[]
+
 
     print("this    %d aircraft" % len(hex_list))
     print(hex_list)
