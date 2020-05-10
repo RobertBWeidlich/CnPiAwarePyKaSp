@@ -5,6 +5,7 @@ import pandas as pd
 import matplotlib
 import matplotlib.pyplot as plt
 
+
 def main():
     data = pd.Series([0.25, 0.5, 0.75, 1.0])
     print('')
@@ -14,6 +15,7 @@ def main():
     print('')
     print('{}: {}'.format("data.index", data.index))
     print('')
+
 
 if __name__ == '__main__':
     print('Python version ' + sys.version)
