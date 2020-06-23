@@ -17,7 +17,6 @@ Periodically poll PiAware data, push to Kafka, and analyze with Spark Stream Pro
     60 * 24 * 6 = 8640 records per day
     60 MB of data per day, assuming payload
     of 7000 bytes
-    
 
-    
-    
+Test for git using https...
+Tue Jun 23 16:10:04 EDT 2020
