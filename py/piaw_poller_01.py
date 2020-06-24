@@ -11,18 +11,29 @@ import sys
 import os
 import time
 import requests
+import math
 
 POLL_PERIOD = 10     # seconds, must be integer > 0, should be 1,2,3,4,5,10,15,20,30, or 60
 WAIT_OFFSET = 0.0
 MAX_LOOP_COUNT = 10000000
 URL = 'http://192.168.1.208:8080/data/aircraft.json'
 
-def generate_timestamp():
-    tnow = time.time()
-    anow = time.asctime(time.localtime(tnow))
-    #s = 'Timestamp: {:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now())
-    s = 'Timestamp: {:%Y-%m-%d %H:%M:%S}'.format(tnow)
-    print(tnow)
+
+def get_current_utc_timestamp():
+    """
+    :return: UTC timestamp string in the form "YYYYMMDD.HHMM.SS.MILLIS"
+      e.g.,                                   "20200624.2328.50.017823"
+    """
+    tt_epoch = time.time()
+    tg_f = time.gmtime(tt_epoch)
+    millisecs = int(math.modf(tt_epoch)[0] * 1000000)
+    type(millisecs)
+    ts = '%04d%02d%02d.%02d%02d.%02d.%06d' %\
+         (tg_f.tm_year, tg_f.tm_mon, tg_f.tm_mday,
+          tg_f.tm_hour, tg_f.tm_min,
+          tg_f.tm_sec, millisecs)
+
+    return ts
 
 
 def main():
@@ -63,7 +74,7 @@ def main():
         """
         3. Generate timestamp
         """
-        ts = generate_timestamp()
+        ts = get_current_utc_timestamp()
 
         """
         4. Create subdirectory, if necessary
