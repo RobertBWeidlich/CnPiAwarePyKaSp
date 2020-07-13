@@ -17,23 +17,55 @@ POLL_PERIOD = 10     # seconds, must be integer > 0, should be 1,2,3,4,5,10,15,2
 WAIT_OFFSET = 0.0
 MAX_LOOP_COUNT = 10000000
 URL = 'http://192.168.1.208:8080/data/aircraft.json'
+BASE_DATA_DIR = '/data/piaware'
+BASE_FILE_NAME = 'piaware_raw-'
 
 
-def get_current_utc_timestamp():
+def get_current_time_info(tz='local',base_dir=BASE_DATA_DIR):
     """
-    :return: UTC timestamp string in the form "YYYYMMDD.HHMM.SS.MILLIS"
-      e.g.,                                   "20200624.2328.50.017823"
+    :param: tz - 'local' or 'gmt'
+    :param: base_dir - build data subdirectory with separate directories for
+              YYYY, MM, DD, and HH
+    :return: dictionary of timestamp-based data:
+      timestamp: timestamp string in the form "YYYYMMDD.HHMM.SS.MILLIS"
+                                        e.g., "20200624.2328.50.017823"
+      directory: data directory
+      file: data file name
+      path: full pathname of data file
     """
+    rv = {}
     tt_epoch = time.time()
-    tg_f = time.gmtime(tt_epoch)
+    t_f = None
+    if tz == 'local':
+        t_f = time.localtime()
+    else:
+        t_f = time.gmtime(tt_epoch)
     millisecs = int(math.modf(tt_epoch)[0] * 1000000)
     type(millisecs)
     ts = '%04d%02d%02d.%02d%02d.%02d.%06d' %\
-         (tg_f.tm_year, tg_f.tm_mon, tg_f.tm_mday,
-          tg_f.tm_hour, tg_f.tm_min,
-          tg_f.tm_sec, millisecs)
+         (t_f.tm_year, t_f.tm_mon, t_f.tm_mday,
+          t_f.tm_hour, t_f.tm_min,
+          t_f.tm_sec, millisecs)
+    rv['timestamp'] = ts
 
-    return ts
+    dir = base_dir
+    if not dir.endswith(os.sep):
+        dir += os.sep
+    dir = '%s%04d%s%02d%s%02d%s%02d' % \
+          (dir,
+           t_f.tm_year, os.sep,
+           t_f.tm_mon, os.sep,
+           t_f.tm_mday, os.sep,
+           t_f.tm_hour)
+    rv['directory'] = dir
+
+    file = '%s%s%s' % (BASE_FILE_NAME, ts, '.json')
+    rv['file'] = file
+
+    path = '%s%s%s' % (dir, os.sep, file)
+    rv['path'] = path
+
+    return rv
 
 
 def main():
@@ -74,9 +106,10 @@ def main():
         """
         3. Generate timestamp
         """
-        ts = get_current_utc_timestamp()
+        ts_info = get_current_time_info(tz='utc')
+        print("ts_info: %s" % ts_info)
 
-        """
+        """get_current_time_info
         4. Create subdirectory, if necessary
         """
 
