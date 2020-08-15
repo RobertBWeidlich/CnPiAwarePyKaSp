@@ -104,18 +104,23 @@ def main():
             continue
 
         """
-        3. Generate timestamp
+        3. Generate timestamp and associated info
         """
-        ts_info = get_current_time_info(tz='utc')
+        ts_info = get_current_time_info(tz='local')
         print("ts_info: %s" % ts_info)
 
-        """get_current_time_info
+        """
         4. Create subdirectory, if necessary
         """
+        if not os.path.exists(ts_info['directory']):
+            print("creating directory \'%s\'", ts_info['directory'])
+            os.makedirs(ts_info['directory'])
 
         """
         5. Write data
         """
+        with open(ts_info['path'], 'wb') as out_file:
+            out_file.write(pa_data)
 
 
 if __name__ == '__main__':
