@@ -15,7 +15,6 @@ import math
 
 POLL_PERIOD = 10     # seconds, must be integer > 0, should be 1,2,3,4,5,10,15,20,30, or 60
 WAIT_OFFSET = 0.0
-MAX_LOOP_COUNT = 10000000
 URL = 'http://192.168.1.208:8080/data/aircraft.json'
 BASE_DATA_DIR = '/data/piaware'
 BASE_FILE_NAME = 'piaware_raw-'
@@ -75,14 +74,23 @@ def main():
         """
         1. Wait
         """
+        print()
         tnow = time.time()  # epoch time, float
         wait_time = float(POLL_PERIOD) - (tnow % float(POLL_PERIOD))
-        print("tnow:      %12.6f" % tnow)
-        print("wait_time: %12.6f" % wait_time)
-        print("%d - waiting" % loop_count)
+        #print("tnow:      %12.6f" % tnow)
+        #print("wait_time: %12.6f" % wait_time)
+        #print("%d - waiting" % loop_count)
+        print(f'{loop_count}: waiting for {wait_time} seconds')
         time.sleep(wait_time)
-        print("here...")
-        my_response = requests.get(URL)
+        print(f'querying "{URL}"')
+        my_response = None
+        try:
+            my_response = requests.get(URL)
+        except:
+            print("WARNING: ")
+            print(sys.exc_info())
+            print(f'Cannot connect to "{URL}" ')
+            continue
 
         """
         2. Poll
@@ -90,14 +98,14 @@ def main():
         pa_data = None
         if my_response.ok:
             sz = len(my_response.content)
-            print("sz: %d" % sz)
+            #print("sz: %d" % sz)
             pa_data = my_response.content
             pa_data_sz = len(pa_data)
             #print(my_response.content)
             # print(my_response)
-            print("pa_data_sz: %d" % pa_data_sz)
-            print("pa_data: ")
-            print(pa_data)
+            #print("pa_data_sz: %d" % pa_data_sz)
+            #print("pa_data: ")
+            #print(pa_data)
         else:
             my_response.raise_for_status()
         if not pa_data:
@@ -107,7 +115,7 @@ def main():
         3. Generate timestamp and associated info
         """
         ts_info = get_current_time_info(tz='local')
-        print("ts_info: %s" % ts_info)
+        #print("ts_info: %s" % ts_info)
 
         """
         4. Create subdirectory, if necessary
@@ -120,6 +128,7 @@ def main():
         5. Write data
         """
         with open(ts_info['path'], 'wb') as out_file:
+            print('writing to "' + ts_info['path'] + '"')
             out_file.write(pa_data)
 
 
