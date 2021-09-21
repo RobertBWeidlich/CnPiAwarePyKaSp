@@ -3,7 +3,7 @@
 """
 file:   piaw_poller_01.py
 author: rbw
-date:   Sat Jun 13 19:43:22 EDT 2020
+date:   Tue Sep 21 13:31:48 EDT 2021
 purpose:
   Loop to periodically poll the PiAware and save in file
 """
@@ -107,7 +107,8 @@ def main():
             #print("pa_data: ")
             #print(pa_data)
         else:
-            my_response.raise_for_status()
+            #my_response.raise_for_status()
+            continue
         if not pa_data:
             continue
 
