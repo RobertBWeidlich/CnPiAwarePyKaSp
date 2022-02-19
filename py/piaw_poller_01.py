@@ -3,7 +3,7 @@
 """
 file:   piaw_poller_01.py
 author: rbw
-date:   Tue Sep 21 13:31:48 EDT 2021
+date:   Sat Feb 19 16:17:33 EST 2022
 purpose:
   Loop to periodically poll the PiAware and save in file
 """
