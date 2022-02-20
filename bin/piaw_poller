@@ -1,0 +1,6 @@
+#!/bin/sh
+
+#/home/weidlich/Desktop/Projects/Projects2020/gh_pc/CnPiAwarePyKaSp/bin
+
+#./piaw_poller_01.py
+nohup ./piaw_poller_01.py >/dev/null 2>&1
