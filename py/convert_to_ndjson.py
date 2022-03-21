@@ -61,7 +61,7 @@ def convert_multiple_files(pa_file_or_dir):
         for file in file_list:
             #print(f"file: {file}")
             path = dir_w_slash + file
-            print(path)
+            #print(path)
             convert_to_ndjson(path)
     elif os.path.isfile(pa_file_or_dir):
         convert_to_ndjson(pa_file_or_dir)
